@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 
     'users.apps.UsersConfig',
+    'movies.apps.MoviesConfig',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
