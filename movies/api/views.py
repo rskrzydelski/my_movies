@@ -1,8 +1,7 @@
 import requests as omdbapi
 
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.pagination import PageNumberPagination
 
 host = 'http://www.omdbapi.com'
 apikey = 'e5d6b092'
@@ -13,6 +12,9 @@ def search_movie_view(request):
     query_title = request.GET.get('title')
     query_year = request.GET.get('year')
 
+    paginator = PageNumberPagination()
+    paginator.page_size = 2
+
     url = '{}/?apikey={}'.format(host, apikey)
     if query_title:
         url += '&s={}'.format(query_title)
@@ -22,4 +24,7 @@ def search_movie_view(request):
     omdb_response = omdbapi.get(url)
     omdb_data = omdb_response.json().get('Search')
 
-    return Response(omdb_data)
+    data = paginator.paginate_queryset(omdb_data, request)
+
+    return paginator.get_paginated_response(data)
+
