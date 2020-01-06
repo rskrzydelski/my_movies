@@ -16,13 +16,9 @@ const apiCall = (url, method, body, resolve, reject) =>
       },
       body: JSON.stringify(body)
   }).then(response => {
-      if (response.ok) {
-          response.json()
-          .then(json => resolve(json))
-      } else {
-          reject(response)
-      }
-  })
+      response.json()
+      .then(json => resolve(json))
+  }).catch( error => console.error(error))
 
 export const post = (url, body) =>
     new Promise(

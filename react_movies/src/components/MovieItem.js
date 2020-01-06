@@ -42,16 +42,17 @@ class MovieItem extends Component {
   }
 
   handleAddToFavReq () {
-    console.log(this.state.title)
+    console.log(this.state.key)
   }
 
   componentDidMount () {
-    const { title, year, type, imdbID } = this.props
+    const { title, year, type, imdbID, key } = this.props
     this.setState({
       title: title,
       year: year,
       type: type,
-      imdbID: imdbID
+      imdbID: imdbID,
+      key: key
     })
   }
 

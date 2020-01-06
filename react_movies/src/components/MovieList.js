@@ -64,7 +64,7 @@ class MovieList extends Component {
     this.state = {
       movies: [],
       draftTitle: '',
-      draftYear: ''
+      draftYear: '',
     }
   }
 
@@ -109,7 +109,7 @@ class MovieList extends Component {
   }
 
   createFav (params) {
-    api.post(favMovie(), {})
+//    api.post(favMovie(), {})
   }
 
   render () {
@@ -133,7 +133,8 @@ class MovieList extends Component {
         title={item.Title}
         type={item.Type}
         year={item.Year}
-        imdbID={item.imdbID} />) : ''}
+        imdbID={item.imdbID} />) : ''
+        }
 
         { movies.previous !==  undefined && movies.previous !== null && <Button onClick={() => {this.refreshMovies(movies.previous)}}>Previous</Button>}
         { movies.next !==  undefined && movies.next !== null && <Button onClick={() => {this.refreshMovies(movies.next)}}>Next</Button>}
