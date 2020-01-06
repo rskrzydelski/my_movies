@@ -20,6 +20,32 @@ const Header = styled.h1`
   color: #fff;
 `
 
+const TextInput = styled.input`
+  padding: 5px;
+  font-size: .7em;
+  background: #232632;
+  color: #d3d4d6;
+  width: 100%;
+  margin-right: 7px;
+  border: 0px;
+  -webkit-apperance: none;
+`
+
+const Button = styled.button`
+  background: #232632;
+  color: #00a7fa;
+  width: 200px;
+  height: 32px;
+  font-size: 0.9em;
+  border: 2px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  &:hover { background: #555; }
+`
+
 class MovieList extends Component {
   static defaultProps = {
       movies: [],
@@ -80,13 +106,13 @@ class MovieList extends Component {
       <Container>
         <Header>Movie list from omdbapi</Header>
         <label for="title">Title</label><br></br>
-        <input type='text' name="Title" id="title" value={this.state.draftTitle} onChange={this.updateTitle}/><br></br>
+        <TextInput type='text' name="Title" id="title" value={this.state.draftTitle} onChange={this.updateTitle}/><br></br>
 
         <label for="year">Year</label><br></br>
-        <input type='text' name="Year" id="year" value={this.state.draftYear} onChange={this.updateYear}/><br></br>
-        <button onClick={this.getMovies}>request movies</button>
+        <TextInput type='text' name="Year" id="year" value={this.state.draftYear} onChange={this.updateYear}/><br></br>
+        <Button onClick={this.getMovies}>request movies</Button>
 
-        <button onClick={this.clearList}>Clear list</button><br></br>
+        <Button onClick={this.clearList}>Clear list</Button><br></br>
         {movies.results !== undefined ? movies.results.map(item =>
         <MovieItem
         title={item.Title}
@@ -94,8 +120,8 @@ class MovieList extends Component {
         year={item.Year}
         imdbID={item.imdbID} />) : ''}
 
-        { movies.previous !==  undefined && movies.previous !== null && <button onClick={() => {this.refreshMovies(movies.previous)}}>Previous</button>}
-        { movies.next !==  undefined && movies.next !== null && <button onClick={() => {this.refreshMovies(movies.next)}}>Next</button>}
+        { movies.previous !==  undefined && movies.previous !== null && <Button onClick={() => {this.refreshMovies(movies.previous)}}>Previous</Button>}
+        { movies.next !==  undefined && movies.next !== null && <Button onClick={() => {this.refreshMovies(movies.next)}}>Next</Button>}
       </Container>
     )
   }

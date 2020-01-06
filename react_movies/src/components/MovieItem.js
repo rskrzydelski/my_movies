@@ -1,4 +1,31 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
+
+const Button = styled.button`
+  background: #00a7fa;
+  color: black;
+  width: 100px;
+  height: 28px;
+  font-size: 1.0em;
+  border: 0px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  &:hover { background: #555; }
+`
+
+const Container = styled.div`
+  justify-content: space-between;
+  border: 2px solid #343744;
+  background: #232632;
+  border-radius: 10px;
+  padding: 5px;
+`
+
+const Paragraph = styled.p`
+  margin-bottom: 1px;
+  margin-top: 1px;
+`
 
 class MovieItem extends Component {
   constructor (props) {
@@ -24,13 +51,13 @@ class MovieItem extends Component {
   render () {
     const { title, year, type, imdbID } = this.state
     return (
-      <div>
-        <h3>Movie title: {title}</h3>
-        <h4>Year: {year}</h4>
-        <h4>Type: {type}</h4>
-        <h4>imdbID: {imdbID}</h4>
-        <hr></hr>
-      </div>
+      <Container>
+        <Paragraph>Movie title: {title}</Paragraph>
+        <Paragraph>Year: {year}</Paragraph>
+        <Paragraph>Type: {type}</Paragraph>
+        <Paragraph>imdbID: {imdbID}</Paragraph>
+        <Button>favorites +</Button>
+      </Container>
     )
   }
 }
