@@ -2,6 +2,21 @@ import React, { Component } from 'react'
 
 import MovieItem from './MovieItem.js'
 import movie_json from '../fake_json/m_list.json'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  background: #2b2e39;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 600px;
+  padding: 14px;
+  border-radius: 14px;
+  margin-top: 14px;
+`
+
+const Header = styled.h1`
+  color: #fff;
+`
 
 class MovieList extends Component {
   static defaultProps = {
@@ -30,12 +45,17 @@ class MovieList extends Component {
   render () {
     const { movies } = this.state
     return (
-      <div>
-        <h1>Movie list from omdbapi</h1>
+      <Container>
+        <Header>Movie list from omdbapi</Header>
         <button onClick={this.clearList}>Clear list</button>
         <button>Refresh list</button>
-        {movies.results !== undefined ? movies.results.map(item => <MovieItem movieRecord={item} />) : ''}
-      </div>
+        {movies.results !== undefined ? movies.results.map(item =>
+        <MovieItem
+        title={item.Title}
+        type={item.Type}
+        year={item.Year}
+        imdbID={item.imdbID} />) : ''}
+      </Container>
     )
   }
 }
