@@ -7,6 +7,7 @@ class FavMovieCreateSerializer(ModelSerializer):
     class Meta:
         model = FavMovie
         fields = [
+            'id',
             'title',
             'imdbID',
             'type',

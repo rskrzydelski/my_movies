@@ -2,7 +2,7 @@ import requests as omdbapi
 
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, DestroyAPIView
 
 from .serializers import FavMovieCreateSerializer
 from movies.models import FavMovie
@@ -43,3 +43,11 @@ class FavMovieLstCreateAPIView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class FavMovieDeleteAPIView(DestroyAPIView):
+    serializer_class = FavMovieCreateSerializer
+
+    def get_queryset(self):
+        queryset = FavMovie.objects.filter(owner=self.request.user)
+        return queryset
