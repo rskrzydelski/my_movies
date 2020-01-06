@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import LoginUser from './components/LoginUser'
 import LogoutUser from './components/LogoutUser'
+import RegUser from './components/RegUser.js'
 import MovieList from './components/MovieList'
 
 const UserHeader = styled.h3`
@@ -29,7 +30,7 @@ class App extends Component {
         {localStorage.token !== undefined ? <UserHeader>User: {localStorage.username}</UserHeader> : ''}
         {localStorage.token !== undefined ? <LogoutUser authChangeCallback={this.onAuthChangeCallback} /> : ''}
         {localStorage.token !== undefined ? <MovieList /> : <LoginUser authChangeCallback={this.onAuthChangeCallback} />}
-
+        {localStorage.token !== undefined ? '' : <RegUser />}
       </div>
     )
   }

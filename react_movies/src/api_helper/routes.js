@@ -14,3 +14,4 @@ export const favMovieDelete = (id) => `${serverUrl}/api/v1/movies/favorite/${id}
 
 export const loginUrl = () => `${serverUrl}/api/v1/auth/login/`
 export const logoutUrl = () => `${serverUrl}/api/v1/auth/logout/`
+export const registerUrl = () => `${serverUrl}/api/v1/auth/registration/`
