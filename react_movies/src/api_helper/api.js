@@ -1,9 +1,13 @@
 export const get = url =>
   new Promise(
     (resolve, reject) => {
-      fetch(url)
+      fetch(url, {
+        headers: {
+          'Authorization': 'Token ' + localStorage.token
+        },
+      })
       .then(response => response.json())
-      .then(json => resolve(json))
+      .then(json => resolve(json)).catch()
     }
   )
 

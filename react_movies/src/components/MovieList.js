@@ -126,7 +126,7 @@ class MovieList extends Component {
         <Button onClick={this.getMovies}>request movies</Button>
 
         <Button onClick={this.clearList}>Clear list</Button>
-        <Button onClick={this.clearList}>Favorites</Button><br></br>
+        <Button onClick={this.getFav}>Favorites</Button><br></br>
 
         {movies.results !== undefined ? movies.results.map(item =>
         <MovieItem
