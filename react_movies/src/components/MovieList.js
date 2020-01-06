@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 
 import MovieItem from './MovieItem.js'
-import movie_json from '../fake_json/m_list.json'
+import { movieByTitleYearApiUrl } from '../api_helper/routes'
+import * as api from '../api_helper/api'
+
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -27,7 +29,7 @@ class MovieList extends Component {
     this.clearList = this.clearList.bind(this)
     this.updateTitle = this.updateTitle.bind(this)
     this.updateYear = this.updateYear.bind(this)
-    this.newQuery = this.newQuery.bind(this)
+    this.getMovies = this.getMovies.bind(this)
 
     this.state = {
       movies: [],
@@ -44,30 +46,18 @@ class MovieList extends Component {
       this.setState({draftYear: event.target.value})
   }
 
-  newQuery () {
+  async getMovies () {
     const title = this.state.draftTitle
     const year = this.state.draftYear
-    let url = 'http://127.0.0.1:8000/api/v1/movies/?'
-    let query = ''
-    if (title !== '') {
-      query = 'title='
-      query += title
-    }
-    if (year !== '') {
-        query !== '' ? query+='&' : query+=''
-        query += 'year='
-        query += year
-    }
 
-    url += query
+    this.setState({movies: []})
 
-    fetch(url)
-    .then(response => response.json())
-    .then(json => this.setState({
-        movies: json,
+    const data = await api.get(movieByTitleYearApiUrl(title, year))
+    this.setState({
+        movies: data,
         draftTitle: '',
         draftYear: '',
-    }))
+    })
   }
 
   clearList () {
@@ -78,6 +68,7 @@ class MovieList extends Component {
 
   render () {
     const { movies } = this.state
+    const { next,  previous} = movies
     return (
       <Container>
         <Header>Movie list from omdbapi</Header>
@@ -86,7 +77,7 @@ class MovieList extends Component {
 
         <label for="year">Year</label><br></br>
         <input type='text' name="Year" id="year" value={this.state.draftYear} onChange={this.updateYear}/><br></br>
-        <button onClick={this.newQuery}>request movies</button>
+        <button onClick={this.getMovies}>request movies</button>
 
         <button onClick={this.clearList}>Clear list</button><br></br>
         {movies.results !== undefined ? movies.results.map(item =>
