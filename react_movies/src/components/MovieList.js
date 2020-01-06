@@ -30,6 +30,7 @@ class MovieList extends Component {
     this.updateTitle = this.updateTitle.bind(this)
     this.updateYear = this.updateYear.bind(this)
     this.getMovies = this.getMovies.bind(this)
+    this.refreshMovies = this.refreshMovies.bind(this)
 
     this.state = {
       movies: [],
@@ -44,6 +45,12 @@ class MovieList extends Component {
 
   updateYear (event) {
       this.setState({draftYear: event.target.value})
+  }
+
+  async refreshMovies (url) {
+    this.setState({movies: []})
+    const data = await api.get(url)
+    this.setState({movies: data})
   }
 
   async getMovies () {
@@ -68,7 +75,7 @@ class MovieList extends Component {
 
   render () {
     const { movies } = this.state
-    const { next,  previous} = movies
+
     return (
       <Container>
         <Header>Movie list from omdbapi</Header>
@@ -86,6 +93,9 @@ class MovieList extends Component {
         type={item.Type}
         year={item.Year}
         imdbID={item.imdbID} />) : ''}
+
+        { movies.previous !==  undefined && movies.previous !== null && <button onClick={() => {this.refreshMovies(movies.previous)}}>Previous</button>}
+        { movies.next !==  undefined && movies.next !== null && <button onClick={() => {this.refreshMovies(movies.next)}}>Next</button>}
       </Container>
     )
   }
