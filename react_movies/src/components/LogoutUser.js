@@ -31,7 +31,6 @@ class LogoutUser extends Component {
     const { authChangeCallback } = this.props
     localStorage.clear()
     const status = await api.post(logoutUrl(), {})
-    console.log(status)
     if (authChangeCallback !== undefined) {
       authChangeCallback()
     }

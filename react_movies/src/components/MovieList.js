@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import MovieItem from './MovieItem.js'
+import FavItem from './FavItem.js'
 import { movieByTitleYearApiUrl, favMovie } from '../api_helper/routes'
 import * as api from '../api_helper/api'
 
@@ -59,10 +60,11 @@ class MovieList extends Component {
     this.getMovies = this.getMovies.bind(this)
     this.refreshMovies = this.refreshMovies.bind(this)
     this.getFav = this.getFav.bind(this)
-    this.createFav = this.createFav.bind(this)
+    this.onFavChangeCallback = this.onFavChangeCallback.bind(this)
 
     this.state = {
       movies: [],
+      fav_movies: [],
       draftTitle: '',
       draftYear: '',
     }
@@ -86,7 +88,7 @@ class MovieList extends Component {
     const title = this.state.draftTitle
     const year = this.state.draftYear
 
-    this.setState({movies: []})
+    this.clearList()
 
     const data = await api.get(movieByTitleYearApiUrl(title, year))
     this.setState({
@@ -97,23 +99,29 @@ class MovieList extends Component {
   }
 
   async getFav () {
-      this.setState({movies: []})
+      this.clearList()
       const data = await api.get(favMovie())
-      this.setState({movies: data})
+      this.setState({fav_movies: data})
   }
 
   clearList () {
       this.setState({
-          movies: []
+          movies: [],
+          fav_movies: []
       })
   }
 
-  createFav (params) {
-//    api.post(favMovie(), {})
+  onFavChangeCallback (fav) {
+    const { fav_movies } = this.state
+    this.clearList()
+    const updated_fav = fav_movies.filter(function(value, index, arr) {
+        return value !== fav;
+    })
+    this.setState({fav_movies: updated_fav})
   }
 
   render () {
-    const { movies } = this.state
+    const { movies, fav_movies } = this.state
 
     return (
       <Container>
@@ -128,13 +136,20 @@ class MovieList extends Component {
         <Button onClick={this.clearList}>Clear list</Button>
         <Button onClick={this.getFav}>Favorites</Button><br></br>
 
-        {movies.results !== undefined ? movies.results.map(item =>
+        {movies.results !== undefined && movies.results.length !== 0 ? movies.results.map(item =>
         <MovieItem
         title={item.Title}
         type={item.Type}
         year={item.Year}
         imdbID={item.imdbID} />) : ''
         }
+
+        {fav_movies !== undefined && fav_movies.length !== 0 ? fav_movies.map(item =>
+        <FavItem
+        fav={item}
+        favChangeCallback={this.onFavChangeCallback}
+        />)
+        : ''}
 
         { movies.previous !==  undefined && movies.previous !== null && <Button onClick={() => {this.refreshMovies(movies.previous)}}>Previous</Button>}
         { movies.next !==  undefined && movies.next !== null && <Button onClick={() => {this.refreshMovies(movies.next)}}>Next</Button>}

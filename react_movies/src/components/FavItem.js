@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import * as api from '../api_helper/api'
-import { favMovie } from '../api_helper/routes'
+import { favMovieDelete } from '../api_helper/routes'
 
 const Button = styled.button`
   background: #00a7fa;
@@ -30,45 +30,43 @@ const Paragraph = styled.p`
   margin-top: 1px;
 `
 
-class MovieItem extends Component {
+class FavItem extends Component {
   constructor (props) {
     super(props)
-    this.handleAddToFavReq = this.handleAddToFavReq.bind(this)
+    this.handleRmFromFavReq = this.handleRmFromFavReq.bind(this)
     this.state = {
-      title: null,
-      year: null,
-      type: null,
-      imdbID: null
+      fav: []
     }
   }
 
-  async handleAddToFavReq () {
-    const status = await api.authPost(favMovie(), this.state)
-    console.log(status)
+  async handleRmFromFavReq () {
+    const { favChangeCallback } = this.props
+    const { fav } = this.state
+    const status = await api.authDelete(favMovieDelete(fav.id))
+    if (favChangeCallback !== undefined) {
+      favChangeCallback(fav)
+    }
   }
 
   componentDidMount () {
-    const { title, year, type, imdbID } = this.props
+    const { fav } = this.props
     this.setState({
-      title: title,
-      year: year,
-      type: type,
-      imdbID: imdbID,
+      fav: fav
     })
   }
 
   render () {
-    const { title, year, type, imdbID } = this.state
+    const { fav } = this.state
     return (
       <Container>
-        <Paragraph>Movie title: {title}</Paragraph>
-        <Paragraph>Year: {year}</Paragraph>
-        <Paragraph>Type: {type}</Paragraph>
-        <Paragraph>imdbID: {imdbID}</Paragraph>
-        <Button onClick={this.handleAddToFavReq}>favorites +</Button>
+        <Paragraph>Title: {fav.title}</Paragraph>
+        <Paragraph>Type: {fav.type}</Paragraph>
+        <Paragraph>Year: {fav.year}</Paragraph>
+        <Paragraph>imdbID {fav.imdbID}</Paragraph>
+        <Button onClick={this.handleRmFromFavReq}>Remove -</Button>
       </Container>
     )
   }
 }
 
-export default MovieItem
+export default FavItem

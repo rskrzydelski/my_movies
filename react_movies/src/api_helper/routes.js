@@ -10,6 +10,7 @@ export const movieByTitleYearApiUrl = (title, year) => {
 }
 
 export const favMovie = () => `${serverUrl}/api/v1/movies/favorite`
+export const favMovieDelete = (id) => `${serverUrl}/api/v1/movies/favorite/${id}`
 
 export const loginUrl = () => `${serverUrl}/api/v1/auth/login/`
 export const logoutUrl = () => `${serverUrl}/api/v1/auth/logout/`
