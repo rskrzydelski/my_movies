@@ -25,9 +25,49 @@ class MovieList extends Component {
   constructor (props) {
     super(props)
     this.clearList = this.clearList.bind(this)
+    this.updateTitle = this.updateTitle.bind(this)
+    this.updateYear = this.updateYear.bind(this)
+    this.newQuery = this.newQuery.bind(this)
+
     this.state = {
-        movies: []
+      movies: [],
+      draftTitle: '',
+      draftYear: ''
     }
+  }
+
+  updateTitle (event) {
+      this.setState({draftTitle: event.target.value})
+  }
+
+  updateYear (event) {
+      this.setState({draftYear: event.target.value})
+  }
+
+  newQuery () {
+    const title = this.state.draftTitle
+    const year = this.state.draftYear
+    let url = 'http://127.0.0.1:8000/api/v1/movies/?'
+    let query = ''
+    if (title !== '') {
+      query = 'title='
+      query += title
+    }
+    if (year !== '') {
+        query !== '' ? query+='&' : query+=''
+        query += 'year='
+        query += year
+    }
+
+    url += query
+
+    fetch(url)
+    .then(response => response.json())
+    .then(json => this.setState({
+        movies: json,
+        draftTitle: '',
+        draftYear: '',
+    }))
   }
 
   clearList () {
@@ -36,19 +76,19 @@ class MovieList extends Component {
       })
   }
 
-  componentDidMount () {
-    fetch('http://127.0.0.1:8000/api/v1/movies/?title=batman&year=2005')
-      .then(response => response.json())
-      .then(json => this.setState({movies: json}))
-  }
-
   render () {
     const { movies } = this.state
     return (
       <Container>
         <Header>Movie list from omdbapi</Header>
-        <button onClick={this.clearList}>Clear list</button>
-        <button>Refresh list</button>
+        <label for="title">Title</label><br></br>
+        <input type='text' name="Title" id="title" value={this.state.draftTitle} onChange={this.updateTitle}/><br></br>
+
+        <label for="year">Year</label><br></br>
+        <input type='text' name="Year" id="year" value={this.state.draftYear} onChange={this.updateYear}/><br></br>
+        <button onClick={this.newQuery}>request movies</button>
+
+        <button onClick={this.clearList}>Clear list</button><br></br>
         {movies.results !== undefined ? movies.results.map(item =>
         <MovieItem
         title={item.Title}
