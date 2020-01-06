@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import * as api from '../api_helper/api'
+
 const Button = styled.button`
   background: #00a7fa;
   color: black;
@@ -30,12 +32,17 @@ const Paragraph = styled.p`
 class MovieItem extends Component {
   constructor (props) {
     super(props)
+    this.handleAddToFavReq = this.handleAddToFavReq.bind(this)
     this.state = {
       title: null,
       year: null,
       type: null,
       imdbID: null
     }
+  }
+
+  handleAddToFavReq () {
+    console.log(this.state.title)
   }
 
   componentDidMount () {
@@ -56,7 +63,7 @@ class MovieItem extends Component {
         <Paragraph>Year: {year}</Paragraph>
         <Paragraph>Type: {type}</Paragraph>
         <Paragraph>imdbID: {imdbID}</Paragraph>
-        <Button>favorites +</Button>
+        <Button onClick={this.handleAddToFavReq}>favorites +</Button>
       </Container>
     )
   }

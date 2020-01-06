@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import MovieItem from './MovieItem.js'
-import { movieByTitleYearApiUrl } from '../api_helper/routes'
+import { movieByTitleYearApiUrl, favMovie } from '../api_helper/routes'
 import * as api from '../api_helper/api'
 
 import styled from 'styled-components'
@@ -34,13 +34,14 @@ const TextInput = styled.input`
 const Button = styled.button`
   background: #232632;
   color: #00a7fa;
-  width: 200px;
+  width: 30%;
   height: 32px;
   font-size: 0.9em;
   border: 2px;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 10px;
+  margin-left: 10px;
   justify-content: center;
   align-items: center;
   &:hover { background: #555; }
@@ -57,6 +58,8 @@ class MovieList extends Component {
     this.updateYear = this.updateYear.bind(this)
     this.getMovies = this.getMovies.bind(this)
     this.refreshMovies = this.refreshMovies.bind(this)
+    this.getFav = this.getFav.bind(this)
+    this.createFav = this.createFav.bind(this)
 
     this.state = {
       movies: [],
@@ -93,10 +96,20 @@ class MovieList extends Component {
     })
   }
 
+  async getFav () {
+      this.setState({movies: []})
+      const data = await api.get(favMovie())
+      this.setState({movies: data})
+  }
+
   clearList () {
       this.setState({
           movies: []
       })
+  }
+
+  createFav (params) {
+    api.post(favMovie(), {})
   }
 
   render () {
@@ -112,7 +125,9 @@ class MovieList extends Component {
         <TextInput type='text' name="Year" id="year" value={this.state.draftYear} onChange={this.updateYear}/><br></br>
         <Button onClick={this.getMovies}>request movies</Button>
 
-        <Button onClick={this.clearList}>Clear list</Button><br></br>
+        <Button onClick={this.clearList}>Clear list</Button>
+        <Button onClick={this.clearList}>Favorites</Button><br></br>
+
         {movies.results !== undefined ? movies.results.map(item =>
         <MovieItem
         title={item.Title}

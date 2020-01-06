@@ -8,3 +8,5 @@ export const movieByTitleYearApiUrl = (title, year) => {
     return `${serverUrl}/api/v1/movies/?title=${title}`
   }
 }
+
+export const favMovie = () => `${serverUrl}/api/v1/movies/favorite`
