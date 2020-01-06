@@ -61,13 +61,13 @@ class LoginUser extends Component {
   }
 
   async handleLogin (event) {
-    const { logginCallback } = this.props
+    const { authChangeCallback } = this.props
     const user = await api.post(loginUrl(), this.state.credentials)
     if (user.key !== undefined) {
       localStorage.setItem('token', user.key)
       localStorage.setItem('username', this.state.credentials.username)
-      if (logginCallback !== undefined) {
-        logginCallback()
+      if (authChangeCallback !== undefined) {
+        authChangeCallback()
       }
     } else {
       localStorage.clear()

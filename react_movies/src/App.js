@@ -4,6 +4,7 @@ import './App.css'
 import styled from 'styled-components'
 
 import LoginUser from './components/LoginUser'
+import LogoutUser from './components/LogoutUser'
 import MovieList from './components/MovieList'
 
 const UserHeader = styled.h3`
@@ -14,19 +15,21 @@ const UserHeader = styled.h3`
 class App extends Component {
   constructor (props) {
     super(props)
-    this.onLogginCallback = this.onLogginCallback.bind(this)
+    this.onAuthChangeCallback = this.onAuthChangeCallback.bind(this)
     this.state = { reload: false }
   }
 
-  onLogginCallback () {
-    this.setState({ reload: true })
+  onAuthChangeCallback () {
+    this.setState({ reload: !this.state.reload })
   }
 
   render () {
     return (
       <div>
         {localStorage.token !== undefined ? <UserHeader>User: {localStorage.username}</UserHeader> : ''}
-        {localStorage.token !== undefined ? <MovieList /> : <LoginUser logginCallback={this.onLogginCallback} />}
+        {localStorage.token !== undefined ? <LogoutUser authChangeCallback={this.onAuthChangeCallback} /> : ''}
+        {localStorage.token !== undefined ? <MovieList /> : <LoginUser authChangeCallback={this.onAuthChangeCallback} />}
+
       </div>
     )
   }
