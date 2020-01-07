@@ -20,7 +20,21 @@ version of Docker for your operating system.
 ### 2. Clone This Repo
 
 ```sh
-git clone https://github.com/...
+git clone git@github.com:rskrzydelski/my_movies.git
 cd my_movies
 ```
 
+### 3. Build And Run Docker
+
+```sh
+docker build -t backend:latest backend
+docker run -v $PWD/backend:/app/backend backend:latest django-admin startproject my_movies .
+docker run -v $PWD/backend:/app/backend -p 8000:8000 backend:latest
+```
+
+```sh
+docker build -t frontend:latest frontend
+docker run -v $PWD/frontend:/app frontend:latest npx create-react-app my_movies
+mv frontend/my_movies/* frontend/my_movies/.gitignore frontend/ && rmdir frontend/my_movies
+docker run -v $PWD/frontend:/app -p 3000:3000 frontend:latest npm start
+```
